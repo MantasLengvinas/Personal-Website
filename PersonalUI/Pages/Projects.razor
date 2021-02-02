@@ -1,0 +1,113 @@
+﻿@page "/projects"
+
+@using PersonalUI.Data
+@using PersonalUI.Models
+@using Microsoft.Extensions.Configuration
+
+@inject IDBAccess _db
+@inject IConfiguration _config
+
+
+<div class="container-fluid projects projects-section-light">
+    <div class="container p-4">
+        <h3>Mano darbai</h3>
+
+        @if (work is null) {
+            <p class="mt-3 pt-3">
+                <em>Loading..</em>
+            </p>
+        }
+        else {
+            <p class="mt-3 pt-3">
+                @work.content
+            </p>
+        }
+
+        <div class="row mt-3 pt-3 projects-section-list">
+            <div class="col-lg-4">
+                <h5>Programavimas</h5>
+                <ul class="mt-3">
+                    <li>Procedūrinis bei objektinis programavimas C++ | Javascript | PHP kalbomis</li>
+                    <li>Back-end programavimas Node JS express</li>
+                    <li>Front-end programavimas React JS | React Native | .NET Blazor</li>
+                </ul>
+            </div>
+            <div class="col-lg-4">
+                <h5>Projektavimas, dizainas</h5>
+                <ul class="mt-3">
+                    <li>Duomenų bazių projektavimas</li>
+                    <li>Svetainių architektūros projektavimas</li>
+                    <li>Svetainių | aplikacijų dizaino kūrimas</li>
+                </ul>
+            </div>
+            <div class="col-lg-4">
+                <h5>Įrankiai</h5>
+                <ul class="mt-3">
+                    <li>Visual Studio | Visual Studio Code</li>
+                    <li>Adobe Photoshop</li>
+                    <li>Dalį projektų galite rasti <NavLink href="https://github.com/MantasLengvinas">Github</NavLink></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid projects projects-section-dark">
+    <div class="container p-4">
+        <h3>Didžiausi projektai</h3>
+        @if (bestProjects is null) {
+            <p class="mt-3 pt-3 mb-3 pb-3">
+                Loading...
+            </p>
+        }
+        else {
+            <p class="mt-3 pt-3 mb-3 pb-3">
+                @bestProjects.content
+            </p>
+        }
+
+        <div class="container mt-3 pt-3 border-top border-light largest-projects">
+            <ul>
+                @if (projects is null) {
+                    <li><em>Loading..</em></li>
+                }
+                else {
+                    foreach (var p in projects) {
+                        string[] stack = p.Stack.Split("|");
+                        <li>
+                            <div class="row border-bottom p-3 border-light">
+                                <div class="col-md-8">
+                                    <h5 class="mb-2 pb-2">@p.Title</h5>
+                                    <p>@p.Description</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <ul class="used-stack">
+                                        @foreach (var s in stack) {
+                                            <li>@s</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<ProjectModel> projects;
+    private PageSectionModel work, bestProjects;
+
+    protected override async Task OnInitializedAsync() {
+
+        string sql = "select section, content from pages where page='projects'";
+        List<PageSectionModel> sections = await _db.LoadData<PageSectionModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+
+        work = sections.Find(s => s.section == "work");
+        bestProjects = sections.Find(s => s.section == "bestProjects");
+
+        sql = "select * from projects";
+        projects = await _db.LoadData<ProjectModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+    }
+}

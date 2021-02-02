@@ -1,0 +1,58 @@
+﻿@page "/"
+
+@using PersonalUI.Data
+@using PersonalUI.Models
+@using PersonalUI.Services
+@using Microsoft.Extensions.Configuration
+
+@inject IDBAccess _db
+@inject IConfiguration _config
+
+<div class="home row">
+    <div class="col d-flex justify-content-center">
+        <div class="col-md-8 d-flex justify-content-center mt-5">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md">
+                        <h1 class="home-name mt-5">Mantas Lengvinas</h1>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md">
+                        @if (home is null) {
+                            <h4 class="home-shortabout">Loading...</h4>
+                        }
+                        else {
+                            <h4 class="home-shortabout">@home.content</h4>
+                        }
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md d-flex flex-row">
+                        <NavLink class="home-button p-2" href="about">
+                            <button class="p-1">Daugiau apie mane</button>
+                        </NavLink>
+
+                        <NavLink class="home-button p-2" href="projects">
+                            <button class="p-1">Mano darbai</button>
+                        </NavLink>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private PageSectionModel home;
+
+    protected override async Task OnInitializedAsync() {
+        string sql = "select section, content from pages where page='home'";
+        List<PageSectionModel> sections = await _db.LoadData<PageSectionModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+
+        home = sections.Find(s => s.section == "home");
+    }
+}
+
+
+

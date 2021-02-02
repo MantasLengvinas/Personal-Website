@@ -1,0 +1,26 @@
+﻿@inherits LayoutComponentBase
+
+@using PersonalUI.Data
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<AuthorizeView>
+    <Authorized>
+        <AdminNavigation />
+        <div class="main" style="background: #f5f5f5; color:#1f1f1f;">
+            <div class="admin-top-row top-row d-flex justify-content-end">
+                <p class="mt-3 text-white">Welcome back, @context.User.Identity.Name</p>
+            </div>
+
+            @Body
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="main">
+            <Navigation />
+
+            @Body
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+
+

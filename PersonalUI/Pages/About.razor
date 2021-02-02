@@ -1,0 +1,117 @@
+﻿@page "/about"
+
+@using PersonalUI.Data
+@using PersonalUI.Models
+@using Microsoft.Extensions.Configuration
+
+@inject IDBAccess _db
+@inject IConfiguration _config
+
+<div class="row about">
+    <div class="container about-container mt-5">
+        <div class="row d-flex justify-content-center about-title mt-2 ">
+            <div class="col col-md-10 d-flex justify-content-center border-bottom border-light">
+                <h2>Apie mane</h2>
+            </div>
+        </div>
+        <div class="row mt-4 about-details d-flex justify-content-center">
+            <div class="col-md-8 ">
+                <div class="row">
+                    <div class="col-md">
+                        <h3>Mantas Lengvinas</h3>
+                        @if (status is null) {
+                            <span class="about-details-small-dark">Loading...</span>
+                        }
+                        else {
+                            <span class="about-details-small-dark">@status.content</span>
+                        }
+                    </div>
+                    <div class="col-md">
+                        <ul class="about-details-info">
+                            @if (location is null) {
+                                <li><i>Loading...</i></li>
+                            }
+                            else {
+                                <li><i>@location.content</i></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center mt-3">
+            <div class="col-md-10 border-top border-light">
+
+            </div>
+        </div>
+        <div class="row mt-4 about-body d-flex justify-content-center">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md">
+                        @if (about is null) {
+                            <p>
+                                <em>Loading...</em>
+                            </p>
+                        }
+                        else {
+                            <p>
+                                @about.content
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container about-footer-container mt-3">
+        <div class="row mt-3 about-fotter d-flex justify-content-center">
+            <div class="col-md-8">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md d-flex justify-content-center">
+                        <ul class="about-social">
+                            <li style="opacity: 0.6; text-align: center" class="justify-content-center">
+                                <h5>Su manimi galite susisiekti</h5>
+                            </li>
+                            <li style="display: inline-block">
+                                <NavLink href="https://www.linkedin.com/in/mantas-lengvinas-8955251b5/">
+                                    <img src="/logos/linkedin.png" alt="linkedin" />
+                                </NavLink>
+                            </li>
+                            <li style="display: inline-block">
+                                <NavLink href="https://github.com/MantasLengvinas">
+                                    <img src="/logos/github.png" alt="github" />
+                                </NavLink>
+                            </li>
+                            <li style="display: inline-block">
+                                <NavLink href="https://www.snapchat.com/add/iimantash">
+                                    <img src="/logos/snapchat.png" alt="snapchat" />
+                                </NavLink>
+                            </li>
+                            <li style="display: inline-block">
+                                <NavLink href="mailto:mantaslengvin@gmail.com">
+                                    <img src="/logos/email.png" alt="email" />
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {      
+
+    private PageSectionModel about, status, location;
+
+    protected override async Task OnInitializedAsync() {
+
+        string sql = "select section, content from pages where page='about'";
+        List<PageSectionModel> sections = await _db.LoadData<PageSectionModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+
+        about = sections.Find(s => s.section == "about");
+        status = sections.Find(s => s.section == "status");
+        location = sections.Find(s => s.section == "location");
+    }
+}

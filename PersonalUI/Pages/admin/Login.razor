@@ -1,0 +1,72 @@
+﻿@page "/auth/login"
+@using Microsoft.Extensions.Configuration;
+@using PersonalUI.Models
+@using PersonalUI.Data
+@using PersonalUI.Services
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject IDBAccess _db
+@inject IConfiguration _config
+
+<div class="container">
+    <div class="container-fluid d-flex justify-content-center mt-5">
+        <div class="col d-flex justify-content-center margin-top">
+            <EditForm Model="@user" OnValidSubmit="@ValidateUser" class="border border-dark rounded p-5">
+                <div class="col d-flex justify-content-center color-white">
+                    <h4>SIGN IN</h4>
+                </div>
+                <div class="col d-flex justify-content-center">
+                    <p class="red">@LoginResponse</p>
+                </div>
+                <div class="form-group">
+                    <label class="color-white">Email adress</label>
+                    <input type="text" @bind="user.Username" name="username" class="form-control" id="usernameInput" aria-describedby="usernameHelp" placeholder="Username" required />
+                </div>
+                <div class="form-group">
+                    <label class="color-white">Password</label>
+                    <input type="password" @bind="user.Password" name="password" required class="form-control" placeholder="Password" />
+                </div>
+                <div class="col-md-12 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary full-width ">SIGN IN</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private UserModel user;
+    public string LoginResponse;
+
+    protected override Task OnInitializedAsync() {
+        user = new UserModel();
+        return base.OnInitializedAsync();
+    }
+
+    private async Task<bool> ValidateUser() {
+
+        user.Password = Utility.Encrypt(user.Password);
+
+        string sql = "select * from users where Username='" + user.Username + "'";
+        var response = await _db.LoadOne<UserModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+
+        if(response != null) {
+            if (user.Password == response.Password) {
+                ((AuthenticationProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(user.Username);
+                NavigationManager.NavigateTo("/");
+
+            }
+            else {
+                LoginResponse = "Credentials are incorrect";
+            }
+        }
+        else {
+            LoginResponse = "Credentials are incorrect";
+        }
+
+        return await Task.FromResult(true);
+    }
+}
