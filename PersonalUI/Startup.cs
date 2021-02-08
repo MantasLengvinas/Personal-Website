@@ -26,8 +26,11 @@ namespace PersonalUI {
         public void ConfigureServices(IServiceCollection services) {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
-            services.AddSingleton<IDBAccess, DBAccess>();
+            //services.AddSingleton<IDBAccess, DBAccess>();
+            services.AddTransient<ISQLDataAccess, SQLDataAccess>();
+            services.AddTransient<IPagesData, PagesData>();
+            services.AddTransient<IProjectsData, ProjectsData>();
+            services.AddTransient<IUserData, UserData>();
 
             services.AddBlazoredSessionStorage();
 

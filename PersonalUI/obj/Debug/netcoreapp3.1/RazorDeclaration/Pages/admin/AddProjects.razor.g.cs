@@ -75,7 +75,21 @@ using PersonalUI.Shared;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/admin/addprojects")]
+#nullable restore
+#line 3 "C:\Users\PC\Documents\Programming\Personal\PersonalUI\Pages\admin\AddProjects.razor"
+using PersonalUI.Data;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 4 "C:\Users\PC\Documents\Programming\Personal\PersonalUI\Pages\admin\AddProjects.razor"
+using PersonalUI.Models;
+
+#line default
+#line hidden
+#nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/admin/editprojects")]
     public partial class AddProjects : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -83,6 +97,21 @@ using PersonalUI.Shared;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 84 "C:\Users\PC\Documents\Programming\Personal\PersonalUI\Pages\admin\AddProjects.razor"
+       
+    private List<ProjectModel> projects;
+
+
+    protected override async Task OnInitializedAsync() {
+
+        projects = await _projects.GetProjects();
+    }
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IProjectsData _projects { get; set; }
     }
 }
 #pragma warning restore 1591

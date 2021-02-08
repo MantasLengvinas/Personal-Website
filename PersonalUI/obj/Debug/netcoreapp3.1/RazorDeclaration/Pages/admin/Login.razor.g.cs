@@ -117,6 +117,7 @@ using PersonalUI.Services;
 
     private UserModel user;
     public string LoginResponse;
+    private string pass = Utility.Encrypt("LMp-010926");
 
     protected override Task OnInitializedAsync() {
         user = new UserModel();
@@ -125,13 +126,12 @@ using PersonalUI.Services;
 
     private async Task<bool> ValidateUser() {
 
-        user.Password = Utility.Encrypt(user.Password);
+        string encrypted = Utility.Encrypt(user.Password);
 
-        string sql = "select * from users where Username='" + user.Username + "'";
-        var response = await _db.LoadOne<UserModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+        var response = await _db.GetUser(user);
 
         if(response != null) {
-            if (user.Password == response.Password) {
+            if (encrypted == response.Password) {
                 ((AuthenticationProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(user.Username);
                 NavigationManager.NavigateTo("/");
 
@@ -141,7 +141,7 @@ using PersonalUI.Services;
             }
         }
         else {
-            LoginResponse = "Credentials are incorrect";
+            LoginResponse = "Failed to authenticate";
         }
 
         return await Task.FromResult(true);
@@ -150,8 +150,7 @@ using PersonalUI.Services;
 #line default
 #line hidden
 #nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IConfiguration _config { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IDBAccess _db { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IUserData _db { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private Blazored.SessionStorage.ISessionStorageService sessionStorage { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private AuthenticationStateProvider AuthenticationStateProvider { get; set; }

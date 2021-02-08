@@ -5,6 +5,10 @@ html, body {
     overflow: visible;
 }
 
+.p-18px{
+    font-size: 18px;
+}
+
 
 .btn-primary {
     color: #fff;

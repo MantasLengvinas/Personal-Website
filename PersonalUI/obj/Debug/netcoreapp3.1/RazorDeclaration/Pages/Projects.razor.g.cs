@@ -105,28 +105,26 @@ using Microsoft.Extensions.Configuration;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 98 "C:\Users\PC\Documents\Programming\Personal\PersonalUI\Pages\Projects.razor"
+#line 105 "C:\Users\PC\Documents\Programming\Personal\PersonalUI\Pages\Projects.razor"
        
     private List<ProjectModel> projects;
     private PageSectionModel work, bestProjects;
 
     protected override async Task OnInitializedAsync() {
 
-        string sql = "select section, content from pages where page='projects'";
-        List<PageSectionModel> sections = await _db.LoadData<PageSectionModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+        List<PageSectionModel> sections = await _sections.GetSections();
 
         work = sections.Find(s => s.section == "work");
         bestProjects = sections.Find(s => s.section == "bestProjects");
 
-        sql = "select * from projects";
-        projects = await _db.LoadData<ProjectModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+        projects = await _projects.GetProjects();
     }
 
 #line default
 #line hidden
 #nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IConfiguration _config { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IDBAccess _db { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IProjectsData _projects { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IPagesData _sections { get; set; }
     }
 }
 #pragma warning restore 1591

@@ -4,14 +4,13 @@
 @using PersonalUI.Models
 @using Microsoft.Extensions.Configuration
 
-@inject IDBAccess _db
-@inject IConfiguration _config
+@inject IPagesData _db
 
 <div class="row about">
     <div class="container about-container mt-5">
         <div class="row d-flex justify-content-center about-title mt-2 ">
             <div class="col col-md-10 d-flex justify-content-center border-bottom border-light">
-                <h2>Apie mane</h2>
+                <h2>About me</h2>
             </div>
         </div>
         <div class="row mt-4 about-details d-flex justify-content-center">
@@ -70,7 +69,7 @@
                     <div class="col-md d-flex justify-content-center">
                         <ul class="about-social">
                             <li style="opacity: 0.6; text-align: center" class="justify-content-center">
-                                <h5>Su manimi galite susisiekti</h5>
+                                <h5>Stay connected</h5>
                             </li>
                             <li style="display: inline-block">
                                 <NavLink href="https://www.linkedin.com/in/mantas-lengvinas-8955251b5/">
@@ -107,8 +106,7 @@
 
     protected override async Task OnInitializedAsync() {
 
-        string sql = "select section, content from pages where page='about'";
-        List<PageSectionModel> sections = await _db.LoadData<PageSectionModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+        List<PageSectionModel> sections = await _db.GetSections();
 
         about = sections.Find(s => s.section == "about");
         status = sections.Find(s => s.section == "status");

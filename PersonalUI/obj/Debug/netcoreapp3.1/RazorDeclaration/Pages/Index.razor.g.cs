@@ -112,13 +112,12 @@ using Microsoft.Extensions.Configuration;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 46 "C:\Users\PC\Documents\Programming\Personal\PersonalUI\Pages\Index.razor"
+#line 45 "C:\Users\PC\Documents\Programming\Personal\PersonalUI\Pages\Index.razor"
        
     private PageSectionModel home;
 
     protected override async Task OnInitializedAsync() {
-        string sql = "select section, content from pages where page='home'";
-        List<PageSectionModel> sections = await _db.LoadData<PageSectionModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+        List<PageSectionModel> sections = await _db.GetSections();
 
         home = sections.Find(s => s.section == "home");
     }
@@ -126,8 +125,7 @@ using Microsoft.Extensions.Configuration;
 #line default
 #line hidden
 #nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IConfiguration _config { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IDBAccess _db { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IPagesData _db { get; set; }
     }
 }
 #pragma warning restore 1591
