@@ -16,7 +16,7 @@
         <div class="row mt-4 about-details d-flex justify-content-center">
             <div class="col-md-8 ">
                 <div class="row">
-                    <div class="col-md">
+                    <div class="col-md-6 about-details-item">
                         <h3>Mantas Lengvinas</h3>
                         @if (status is null) {
                             <span class="about-details-small-dark">Loading...</span>
@@ -25,13 +25,15 @@
                             <span class="about-details-small-dark">@status.content</span>
                         }
                     </div>
-                    <div class="col-md">
+                    <div class="col-md-6 about-details-item">
                         <ul class="about-details-info">
                             @if (location is null) {
                                 <li><i>Loading...</i></li>
                             }
                             else {
-                                <li><i>@location.content</i></li>
+                                string[] p = location.content.Split("|");
+                        <li class="p-1 d-md-inline-block"><span class="d-inline oi oi-home" /><p class="d-inline pl-2">@p[0]</p></li>
+                                <li class="p-1 d-md-inline-block"><span class="d-inline oi oi-location"/><p class="d-inline pl-2">@p[1]</p></li>
                             }
                         </ul>
                     </div>
@@ -47,16 +49,19 @@
             <div class="col-md-8">
                 <div class="row">
                     <div class="col-md">
-                        @if (about is null) {
-                            <p>
-                                <em>Loading...</em>
-                            </p>
-                        }
-                        else {
-                            <p>
-                                @about.content
-                            </p>
-                        }
+                        <ul>
+                            @if (about is null) {
+                                <p>
+                                    <em>Loading...</em>
+                                </p>
+                            }
+                            else {
+                                string[] contents = about.content.Split("|");
+                                foreach (var c in contents) {
+                                    <li style="list-style: disc; text-indent: 30px;" class="m-2 p-2">@c</li>
+                                }
+                            }
+                        </ul>
                     </div>
                 </div>
             </div>

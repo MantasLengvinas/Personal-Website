@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "9IehNY2WJwdZWKtsVkge7wZ+SAkslwyDUJihqWB8fshuI+INSwuppMsydsw+dIQgE5m4xeYzr9AYkmnPfJeDXQ==",
+  "dgSpecHash": "UOAe5SAkkcMAYNXnIWwxLXRjyy1arIyLVsBM+/ZEUTVUjBenv7jDIGrGBPnMfXAlW6bHfs1e2PqDjL2wGFkulA==",
   "success": true,
   "projectFilePath": "C:\\Users\\PC\\Documents\\Programming\\Personal\\PersonalUI\\PersonalUI.csproj",
   "expectedPackageFiles": [
@@ -47,7 +47,7 @@
     "C:\\Users\\PC\\.nuget\\packages\\system.text.encoding.codepages\\4.4.0\\system.text.encoding.codepages.4.4.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
-    "C:\\Users\\PC\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.10\\microsoft.netcore.app.host.win-x64.3.1.10.nupkg.sha512"
+    "C:\\Users\\PC\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.11\\microsoft.netcore.app.host.win-x64.3.1.11.nupkg.sha512"
   ],
   "logs": []
 }
